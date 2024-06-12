@@ -401,21 +401,21 @@ let levels = {
       // Mendefinisikan jebakan mobile, gergaji
       traps = [
         new Saw({
-          imageSrc: "./img/traps/onSaw.png",
+          imageSrc: "./img/traps/OnSaw.png",
           frameRate: 8,
           animations: {},
           x: 387.0,
           y: 214.0,
         }),
         new Saw({
-          imageSrc: "./img/traps/onSaw.png",
+          imageSrc: "./img/traps/OnSaw.png",
           frameRate: 8,
           animations: {},
           x: 515.0,
           y: 214.0,
         }),
         new Saw({
-          imageSrc: "./img/traps/onSaw.png",
+          imageSrc: "./img/traps/OnSaw.png",
           frameRate: 8,
           animations: {},
           x: 643.0,
@@ -816,7 +816,7 @@ let levels = {
         // Mendeklarasikan array perangkap
         new Saw({
           // Membuat objek gergaji
-          imageSrc: "./img/traps/onSaw.png", // Sumber gambar gergaji
+          imageSrc: "./img/traps/OnSaw.png", // Sumber gambar gergaji
           frameRate: 8, // Kecepatan frame animasi gergaji
           animations: {}, // Animasi gergaji (kosong dalam contoh ini)
           x: 387.0, // Posisi awal x gergaji
@@ -824,7 +824,7 @@ let levels = {
         }),
         new Saw({
           // Membuat objek gergaji
-          imageSrc: "./img/traps/onSaw.png", // Sumber gambar gergaji
+          imageSrc: "./img/traps/OnSaw.png", // Sumber gambar gergaji
           frameRate: 8, // Kecepatan frame animasi gergaji
           animations: {}, // Animasi gergaji (kosong dalam contoh ini)
           x: 643.0, // Posisi awal x gergaji
@@ -832,7 +832,7 @@ let levels = {
         }),
         new Saw({
           // Membuat objek gergaji
-          imageSrc: "./img/traps/onSaw.png", // Sumber gambar gergaji
+          imageSrc: "./img/traps/OnSaw.png", // Sumber gambar gergaji
           frameRate: 8, // Kecepatan frame animasi gergaji
           animations: {}, // Animasi gergaji (kosong dalam contoh ini)
           x: 755.0, // Posisi awal x gergaji
