@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Pixel Adventure</title>
+    <style media="screen">
+      body {
+        background: #3f3851;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      #canvas {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="level-text"></div>
+
+    <canvas id="canvas" style="display: none"></canvas>
+
+    <!-- Initial screen -->
+    <div id="start-screen">
+      <div>
+        <div class="character-container">
+          <img src="img/mp.png" alt="Character" class="character" />
+        </div>
+        <div class="input-group">
+          <input
+            id="playerName"
+            type="text"
+            style="text-align: center"
+            placeholder="Masukan nama..."
+            required
+          />
+        </div>
+        <div class="button-group">
+          <button class="start-btn" onclick="startGame()">Start</button>
+          <button class="instructions-btn" onclick="goToInstructionsScreen()">
+            Instruksi
+          </button>
+          <button class="history-btn" onclick="showHistory()">
+            Riwayat Permainan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game History Screen -->
+    <div id="history-screen" style="display: none">
+      <h2>Riwayat Permainan</h2>
+      <ul id="historyList"></ul>
+      <button onclick="goToStartScreen()">Main Menu</button>
+    </div>
+
+    <!-- Pause screen -->
+    <div id="pause-screen" class="screen" style="display: none">
+      <div class="button-container">
+        <button onclick="resumeGame()">Resume</button>
+        <button type="button" id="mainMenuButton">Main Menu</button>
+        <button onclick="restartGame()">Restart</button>
+      </div>
+    </div>
+
+    <!-- Win screen -->
+    <div id="win-screen" class="win-screen" style="display: none">
+      <div class="overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h2>Anda Menang!</h2>
+          </div>
+          <div class="modal-body">
+            <p>
+              Anda berhasil menyelesaikan permainan
+              <span id="timeElapsedSpan"></span> detik
+            </p>
+            <div class="section">
+              <h3>Peringkat:</h3>
+              <ul id="leaderboardList"></ul>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="main-menu-btn" onclick="goToStartScreen()">
+              Main Menu
+            </button>
+            <button class="restart-btn" onclick="restartGame()">Restart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instruction screen -->
+    <div id="how-to-play" class="instructions-screen" style="display: none">
+      <div class="overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <h2>Cara Bermain</h2>
+          </div>
+          <div class="modal-body">
+            <p>
+              Ide utamanya adalah untuk menyelesaikan semua level dengan cepat
+              dan efisien dalam upaya untuk mencapai skor tertinggi atau
+              pencapaian terbaik dalam permainan ini.
+            </p>
+            <hr />
+            <!-- Garis tambahan -->
+            <br />
+            <div class="control-keys">
+              <div class="key">
+                <img src="img/other/a.png" alt="aKey" />
+                <p>Pindah ke Kiri</p>
+              </div>
+              <div class="key">
+                <img src="img/other/w.png" alt="wKey" />
+                <p>Melompat</p>
+              </div>
+              <div class="key">
+                <img src="img/other/d.png" alt="dKey" />
+                <p>Pindah ke Kanan</p>
+              </div>
+              <div class="key">
+                <img src="img/other/esc.png" alt="escKey" />
+                <p>Pause</p>
+              </div>
+            </div>
+            <hr />
+            <!-- Garis tambahan -->
+            <p style="color: black">Hindari jebakan:</p>
+            <div class="traps">
+              <img src="img/traps/OffSaw.png" alt="Saw" />
+              <img src="img/traps/PixelArrow.png" alt="Arrow" />
+              <img src="img/traps/SpikedBall.png" alt="SpikedBall" />
+              <img src="img/traps/Spikes.png" alt="Spikes" />
+            </div>
+            <hr />
+            <!-- Garis tambahan -->
+            <p>
+              Ambil jam pasir untuk mengurangi waktu Anda sebanyak 10 detik.
+            </p>
+            <img
+              src="img/objects/PixelHourglass.png"
+              alt="Hourglass"
+              class="hourglass"
+            />
+          </div>
+          <div class="modal-footer">
+            <button onclick="goToStartScreen()" class="main-menu-btn">
+              Main Menu
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas, initially not shown -->
+    <canvas id="canvas" style="display: none"></canvas>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"
+      integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics-compat.js"></script>
+    <script>
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID",
+        measurementId: "YOUR_MEASUREMENT_ID",
+      };
+      const firebaseApp = firebase.initializeApp(firebaseConfig);
+      const db = firebaseApp.firestore();
+    </script>
+    <script src="js/utils.js" type="text/javascript"></script>
+    <script src="js/data/collisions.js" type="text/javascript"></script>
+    <script src="js/data/traps.js" type="text/javascript"></script>
+    <script src="js/classes/CollisionBlock.js" type="text/javascript"></script>
+    <script src="js/classes/TrapBlock.js" type="text/javascript"></script>
+    <script src="js/classes/Sprite.js" type="text/javascript"></script>
+    <script src="js/classes/Player.js" type="text/javascript"></script>
+    <script src="js/classes/Saw.js" type="text/javascript"></script>
+    <script src="js/classes/SpikeBall.js" type="text/javascript"></script>
+    <script src="js/classes/Arrow.js" type="text/javascript"></script>
+    <script src="js/eventListeners.js" type="text/javascript"></script>
+    <script src="main.js" type="text/javascript"></script>
+  </body>
+</html>
